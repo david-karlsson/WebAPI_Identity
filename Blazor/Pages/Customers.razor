@@ -1,0 +1,106 @@
+﻿@page "/customers"
+@using Blazor.Models
+@inject HttpClient http
+
+
+    <div class="container">
+
+        <div class="text-right">
+
+            <button type="submit" class="btn btn-danger" @onclick="DeleteAllCustomers">Ta borta ALLA Kunder!</button>
+        </div>
+
+
+
+        <EditForm class="my-5" Model="@customer" OnSubmit="@CreateCustomer">
+
+            <h5 class="mb-5">Skapa en Kund</h5>
+            <div class="form-group">
+
+
+                <div class="row">
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="Förnamn.." @bind="customer.FirstName" />
+                    </div>
+
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="Efternamn.." @bind="customer.LastName" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <input type="text" class="form-control" placeholder="Email.." @bind="customer.Email" />
+
+
+            </div>
+
+            <button type="submit" class="bnt btn-success">Skapa Kund</button>
+        </EditForm>
+
+    </div>
+
+
+@code {
+
+
+    private List<CustomerModel> customers;
+    private CustomerCreateModel customer;
+
+
+
+
+    private async Task GetCustomers()
+
+    {
+        customers = await http.GetJsonAsync<List<CustomerModel>>("https://localhost:44318/api/customers");
+        StateHasChanged();
+    }
+
+
+
+
+    private async Task CreateCustomer()
+
+    {
+        await http.PostJsonAsync<CustomerCreateModel>("https://localhost:44318/api/customers",customer);
+        customer = new CustomerCreateModel();
+        await GetCustomers();
+
+    }
+
+
+
+    private async Task DeleteCustomer(int id)
+
+    {
+        await http.DeleteAsync("https://localhost:44318/api/customers/{id}");
+        await GetCustomers();
+
+    }
+
+
+    private async Task DeleteAllCustomers()
+
+    {
+        await http.DeleteAsync("https://localhost:44318/api/customers/all");
+        await GetCustomers();
+
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        customer = new CustomerCreateModel();
+        await GetCustomers();
+    }
+
+
+}

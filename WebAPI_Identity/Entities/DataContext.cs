@@ -16,5 +16,8 @@ namespace WebAPI_Identity.Entities
 
         public DbSet<User>Users { get; set; }
 
+        public DbSet<Customer> Customers { get; set; }
+
+
     }
 }
