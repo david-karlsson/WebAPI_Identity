@@ -1,0 +1,160 @@
+﻿@page "/issues"
+@using Blazor.Models
+@inject HttpClient http
+
+
+    <div class="container">
+
+        <div class="text-right">
+
+            <button type="submit" class="btn btn-danger" @onclick="DeleteAllIssues">Ta borta ALLA Kunder!</button>
+        </div>
+
+
+
+        <EditForm class="my-5" Model="@issue" OnSubmit="@CreateIssue">
+
+            <h5 class="mb-5">Skapa en Kund</h5>
+            <div class="form-group">
+
+
+                <div class="row">
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="Förnamn.." @bind="issue.FirstName" />
+                    </div>
+
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="Efternamn.." @bind="issue.LastName" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <input type="text" class="form-control" placeholder="Email.." @bind="issue.IssueName" />
+
+
+            </div>
+
+            <button type="submit" class="bnt btn-success">Skapa Ärende</button>
+        </EditForm>
+
+
+
+        <table class="table">
+
+
+            <thead class="thead-light">
+
+                <tr>
+
+                    <th scope="col">#</th>
+                    <th scope="col">Förnamn</th>
+                    <th scope="col">EfterNamn</th>
+                    <th scope="col" colspan="2">ÄrendeNamn</th>
+
+
+
+                </tr>
+            </thead>
+
+
+
+            @if(issues != null)
+            {
+
+
+                <tbody>
+
+                    @foreach(var issue in issues)
+
+                    {
+
+                    <tr>
+
+                        <th scope="row">@issue.Id</th>
+                        <td>@issue.IssueName</td>
+                        <td>@issue.FirstName</td>
+                        <td>@issue.LastName</td>
+                        <td>@issue.Time</td>
+                        <td>@issue.Description</td>
+                        <td>@issue.Status</td>
+                        <td class="center">
+
+                            <span style="cursor:pointer;" class="oi oi-trash" @onclick="()=>DeleteIssue(issue.Id)"></span>
+                        </td>
+
+
+                    </tr>
+                    }
+
+
+                </tbody>
+            }
+        </table>
+
+    </div>
+
+
+@code {
+
+
+    private List<IssueModel> issues;
+    private IssueCreateModel issue;
+
+
+
+
+    private async Task GetIssues()
+
+    {
+        issues = await http.GetJsonAsync<List<IssueModel>>("https://localhost:44318/api/issues");
+        StateHasChanged();
+    }
+
+
+
+
+    private async Task CreateIssue()
+
+    {
+        await http.PostJsonAsync<IssueCreateModel>("https://localhost:44318/api/issues", issue);
+        issue = new IssueCreateModel();
+        await GetIssues();
+
+    }
+
+
+
+    private async Task DeleteIssue(int id)
+
+    {
+        await http.DeleteAsync($"https://localhost:44318/api/issues/{id}");
+        await GetIssues();
+
+    }
+
+
+    private async Task DeleteAllIssues()
+
+    {
+        await http.DeleteAsync("https://localhost:44318/api/issues/all");
+        await GetIssues();
+
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        issue = new IssueCreateModel();
+        await GetIssues();
+    }
+
+
+}

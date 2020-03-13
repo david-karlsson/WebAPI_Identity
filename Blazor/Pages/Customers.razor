@@ -44,6 +44,57 @@
             <button type="submit" class="bnt btn-success">Skapa Kund</button>
         </EditForm>
 
+
+
+        <table class="table">
+
+
+            <thead class="thead-light">
+
+                <tr>
+
+                    <th scope="col">#</th>
+                    <th scope="col">Förnamn</th>
+                    <th scope="col">EfterNamn</th>
+                    <th scope="col" colspan="2">Email</th>
+
+
+
+                </tr>
+            </thead>
+
+
+
+            @if(customers != null)
+            {
+
+
+                <tbody>
+
+                    @foreach(var customer in customers)
+
+                    {
+
+                    <tr>
+
+                        <th scope="row">@customer.Id</th>
+                        <td>@customer.FirstName</td>
+                        <td>@customer.LastName</td>
+                        <td>@customer.Email</td>
+                        <td class="center">
+
+                            <span style="cursor:pointer;" class="oi oi-trash" @onclick="()=>DeleteCustomer(customer.Id)"></span>
+                        </td>
+
+
+                    </tr>
+                    }
+
+
+                </tbody>
+            }
+        </table>
+
     </div>
 
 
@@ -80,7 +131,7 @@
     private async Task DeleteCustomer(int id)
 
     {
-        await http.DeleteAsync("https://localhost:44318/api/customers/{id}");
+        await http.DeleteAsync($"https://localhost:44318/api/customers/{id}");
         await GetCustomers();
 
     }
