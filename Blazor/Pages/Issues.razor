@@ -7,14 +7,14 @@
 
         <div class="text-right">
 
-            <button type="submit" class="btn btn-danger" @onclick="DeleteAllIssues">Ta borta ALLA Kunder!</button>
+            <button type="submit" class="btn btn-danger" @onclick="DeleteAllIssues">Ta borta ALLA ärenden!</button>
         </div>
 
 
 
         <EditForm class="my-5" Model="@issue" OnSubmit="@CreateIssue">
 
-            <h5 class="mb-5">Skapa en Kund</h5>
+            <h5 class="mb-5">Skapa ett Ärende</h5>
             <div class="form-group">
 
 
@@ -32,13 +32,27 @@
                     </div>
                 </div>
 
+
             </div>
 
             <div class="form-group">
 
-                <input type="text" class="form-control" placeholder="Email.." @bind="issue.IssueName" />
+                <input type="text" class="form-control" placeholder="ÄrendeNamn" @bind="issue.IssueName" />
 
+                <div class="col">
 
+                    <input type="text" class="form-control" placeholder="Tidpunkt:" @bind="issue.Time" />
+                </div>
+
+                <div class="col">
+
+                    <input type="text" class="form-control" placeholder="Beskriv ärendet.." @bind="issue.Description" />
+                </div>
+
+                <div class="col">
+
+                    <input type="text" class="form-control" placeholder="Status:" @bind="issue.Status" />
+                </div>
             </div>
 
             <button type="submit" class="bnt btn-success">Skapa Ärende</button>
@@ -57,6 +71,10 @@
                     <th scope="col">Förnamn</th>
                     <th scope="col">EfterNamn</th>
                     <th scope="col" colspan="2">ÄrendeNamn</th>
+                    <th scope="col">Tidpunkt</th>
+                    <th scope="col">Beskrivning</th>
+                    <th scope="col">Status</th>
+
 
 
 
