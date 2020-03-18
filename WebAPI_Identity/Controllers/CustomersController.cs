@@ -85,10 +85,6 @@ namespace WebAPI_Identity.Controllers
             return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
-
-
-
-
         // DELETE: api/Customers/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Customer>> DeleteCustomer(int id)
@@ -110,7 +106,7 @@ namespace WebAPI_Identity.Controllers
         public async Task<ActionResult> DeleteAllCustomers()
         {
 
-            foreach(var c in _context.Customers)
+            foreach (var c in _context.Customers)
             {
 
                 _context.Customers.Remove(c);

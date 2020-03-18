@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+
+
 namespace Blazor.Models
 {
     public class IssueCreateModel
@@ -11,15 +13,18 @@ namespace Blazor.Models
         [Required]
         public int Id { get; set; }
 
+        public int CustomerId { get; set; }
+
+
         [Required]
         public string IssueName { get; set; }
 
-        [Required]
-        public string FirstName { get; set; }
+        //[Required]
+        //public string FirstName { get; set; }
 
-        [Required]
+        //[Required]
 
-        public string LastName { get; set; }
+        //public string LastName { get; set; }
 
         [Required]
         public DateTime Time { get; set; }

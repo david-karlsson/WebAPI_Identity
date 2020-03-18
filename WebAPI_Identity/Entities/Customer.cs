@@ -9,7 +9,7 @@ namespace WebAPI_Identity.Entities
     public class Customer
     {
 
-    [Required]
+        [Required]
 
         public int Id { get; set; }
 
@@ -26,7 +26,7 @@ namespace WebAPI_Identity.Entities
 
         public string Email { get; set; }
 
-        public ICollection<Issue> Issue{ get; set; }
+        //public ICollection<Issue> Issue{ get; set; }
 
 }
 }

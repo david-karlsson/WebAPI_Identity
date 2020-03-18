@@ -18,5 +18,7 @@ namespace Blazor.Models
 
         public string Email { get; set; }
 
+        //public IssueModel IssueModel {get;set;}
+
     }
 }

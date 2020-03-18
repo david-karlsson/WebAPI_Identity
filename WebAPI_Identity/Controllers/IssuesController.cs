@@ -24,7 +24,10 @@ namespace WebAPI_Identity.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Issue>>> GetIssue()
         {
-            return await _context.Issue.ToListAsync();
+            return await _context.Issue
+
+                .Include(i => i.Customer)
+                .ToListAsync();
         }
 
         // GET: api/Issues/5

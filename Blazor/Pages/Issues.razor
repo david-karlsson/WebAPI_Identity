@@ -20,19 +20,25 @@
 
                 <div class="row">
 
+                    @*<div class="col">
+
+            <input type="text" class="form-control" placeholder="Förnamn.." @bind="issue.FirstName" />
+        </div>
+
+
+        <div class="col">
+
+            <input type="text" class="form-control" placeholder="Efternamn.." @bind="issue.LastName" />
+        </div>
+                    *@
+
+
                     <div class="col">
 
-                        <input type="text" class="form-control" placeholder="Förnamn.." @bind="issue.FirstName" />
+                        <input type="text" class="form-control" placeholder="Kund.." @bind="issue.CustomerId" />
                     </div>
 
-
-                    <div class="col">
-
-                        <input type="text" class="form-control" placeholder="Efternamn.." @bind="issue.LastName" />
-                    </div>
                 </div>
-
-
             </div>
 
             <div class="form-group">
@@ -68,8 +74,9 @@
                 <tr>
 
                     <th scope="col">#</th>
-                    <th scope="col">Förnamn</th>
-                    <th scope="col">EfterNamn</th>
+                    @*<th scope="col">Förnamn</th>
+                    <th scope="col">EfterNamn</th>*@
+                    <th scope="col">Kund</th>
                     <th scope="col" colspan="2">ÄrendeNamn</th>
                     <th scope="col">Tidpunkt</th>
                     <th scope="col">Beskrivning</th>
@@ -96,6 +103,9 @@
                     <tr>
 
                         <th scope="row">@issue.Id</th>
+
+                        <td>@issue.CustomerId</td>
+
                         <td>@issue.IssueName</td>
                         <td>@issue.FirstName</td>
                         <td>@issue.LastName</td>

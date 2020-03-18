@@ -15,19 +15,23 @@ namespace WebAPI_Identity.Entities
         [Required]
         public string IssueName { get; set; }
 
-        [Required]
+   /*     [Required]
         public string FirstName { get; set; }
 
         [Required]
 
         public string LastName { get; set; }
-
+*/
         [Required]
         public DateTime Time { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
         public string Status { get; set; }
+
+        public int CustomerId { get;set; }
+
+        public Customer Customer { get; set; }
 
     }
 }

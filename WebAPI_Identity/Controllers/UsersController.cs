@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI_Identity.Entities;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI_Identity.Models;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI_Identity.Controllers
 {
@@ -100,6 +102,9 @@ namespace WebAPI_Identity.Controllers
                     Email = model.Email
 
                 };
+
+                user.CreatePasswordHash(model.Password);
+
                 _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -114,6 +119,40 @@ namespace WebAPI_Identity.Controllers
             }
 
         }
+
+
+
+
+
+        //[AllowAnonymous]
+        //[HttpPost("login")]
+        //public async Task<ActionResult<User>> Login([FromBody]LoginModel model)
+        //{
+
+
+        //    if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+        //        return BadRequest("Email or user not found");
+        //    var user = await _context.Users.SingleOrDefaultAsync(user => user.Email == model.Email);
+
+        //    if (user == null)
+        //        return BadRequest("user not found");
+
+        //    if (!user.VerifyPasswordHash(model.Password))
+        //    return BadRequest("passwords don't match");
+
+
+        //var tokenHandler = new JwtSecurityTokenHandler();
+        //var key = Encoding.ASCII.GetBytes(Configuration.GetSection("Secret").Value);
+        //var tokenDescpriptor = new SecurityTokenDescriptor
+        //{
+
+
+        //}
+
+
+
+
+
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]

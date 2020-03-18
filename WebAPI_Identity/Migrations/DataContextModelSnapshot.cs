@@ -50,22 +50,14 @@ namespace WebAPI_Identity.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IssueName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -117,9 +109,11 @@ namespace WebAPI_Identity.Migrations
 
             modelBuilder.Entity("WebAPI_Identity.Entities.Issue", b =>
                 {
-                    b.HasOne("WebAPI_Identity.Entities.Customer", null)
-                        .WithMany("Issue")
-                        .HasForeignKey("CustomerId");
+                    b.HasOne("WebAPI_Identity.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

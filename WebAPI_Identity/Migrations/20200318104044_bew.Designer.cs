@@ -10,8 +10,8 @@ using WebAPI_Identity.Entities;
 namespace WebAPI_Identity.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200313105958_issue")]
-    partial class issue
+    [Migration("20200318104044_bew")]
+    partial class bew
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,27 +47,19 @@ namespace WebAPI_Identity.Migrations
 
             modelBuilder.Entity("WebAPI_Identity.Entities.Issue", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IssueName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -78,7 +70,7 @@ namespace WebAPI_Identity.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -119,9 +111,11 @@ namespace WebAPI_Identity.Migrations
 
             modelBuilder.Entity("WebAPI_Identity.Entities.Issue", b =>
                 {
-                    b.HasOne("WebAPI_Identity.Entities.Customer", null)
-                        .WithMany("Issue")
-                        .HasForeignKey("CustomerId");
+                    b.HasOne("WebAPI_Identity.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

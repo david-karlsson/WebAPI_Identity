@@ -9,8 +9,9 @@ namespace Blazor.Models
     {
 
         public int Id { get; set; }
+        public int CustomerId { get; set; }
 
- 
+
         public string IssueName { get; set; }
 
         public string FirstName { get; set; }
