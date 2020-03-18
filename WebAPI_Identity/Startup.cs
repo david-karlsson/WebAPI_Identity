@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using WebAPI_Identity.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebAPI_Identity
 {
@@ -30,8 +31,16 @@ namespace WebAPI_Identity
             services.AddControllers();
 
             services.AddCors();
+
+            services.AddCors();
             services.AddDbContext<DataContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
+
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +58,8 @@ namespace WebAPI_Identity
             app.UseAuthorization();
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

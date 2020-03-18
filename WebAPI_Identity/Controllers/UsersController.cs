@@ -6,10 +6,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI_Identity.Entities;
+
 using Microsoft.AspNetCore.Authorization;
 using WebAPI_Identity.Models;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+
 
 namespace WebAPI_Identity.Controllers
 {
@@ -22,9 +27,15 @@ namespace WebAPI_Identity.Controllers
     {
         private readonly DataContext _context;
 
-        public UsersController(DataContext context)
+
+
+        public IConfiguration Configuration { get; }
+
+
+        public UsersController(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         // GET: api/Users
@@ -124,38 +135,62 @@ namespace WebAPI_Identity.Controllers
 
 
 
-        //[AllowAnonymous]
-        //[HttpPost("login")]
-        //public async Task<ActionResult<User>> Login([FromBody]LoginModel model)
-        //{
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<ActionResult<User>> Login([FromBody]LoginModel model)
+        {
 
 
-        //    if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
-        //        return BadRequest("Email or user not found");
-        //    var user = await _context.Users.SingleOrDefaultAsync(user => user.Email == model.Email);
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+                return BadRequest("Email or user not found");
+            var user = await _context.Users.SingleOrDefaultAsync(user => user.Email == model.Email);
 
-        //    if (user == null)
-        //        return BadRequest("user not found");
+            if (user == null)
+                return BadRequest("user not found");
 
-        //    if (!user.VerifyPasswordHash(model.Password))
-        //    return BadRequest("passwords don't match");
-
-
-        //var tokenHandler = new JwtSecurityTokenHandler();
-        //var key = Encoding.ASCII.GetBytes(Configuration.GetSection("Secret").Value);
-        //var tokenDescpriptor = new SecurityTokenDescriptor
-        //{
+            if (!user.VerifyPasswordHash(model.Password))
+                return BadRequest("passwords don't match");
 
 
-        //}
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("Secret").Value);
+            var tokenDescpriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+
+            };
+            var token = tokenHandler.CreateToken(tokenDescpriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+
+
+            return Ok(
+                new
+                {
+                    id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Token = tokenString
+                }
+
+                );
+        }
 
 
 
 
 
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
+            // DELETE: api/Users/5
+            [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);

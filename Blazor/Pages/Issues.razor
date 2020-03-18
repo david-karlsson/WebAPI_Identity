@@ -33,34 +33,49 @@
                     *@
 
 
+                 
+
+
+                    @*<InputSelect @bind-Value="IssueModel.CustomerId" class="form-control">
+
+
+                        @if (model?.Countries != null)
+                        {
+
+                            @foreach (var i in (IEnumerable < IssueModel)issue)
+                                {
+                        <option value="@i">@i</option>
+                            }}
+
+                        </InputSelect>*@
+                    
+                </div>
+
+                <div class="form-group">
+
                     <div class="col">
 
-                        <input type="text" class="form-control" placeholder="Kund.." @bind="issue.CustomerId" />
+                        <input type="text" class="form-control" placeholder="kund.." @bind="issue.CustomerId" />
                     </div>
 
+                    <input type="text" class="form-control" placeholder="ÄrendeNamn" @bind="issue.IssueName" />
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="Tidpunkt:" @bind="issue.Time" />
+                    </div>
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="Beskriv ärendet.." @bind="issue.Description" />
+                    </div>
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="Status:" @bind="issue.Status" />
+                    </div>
                 </div>
             </div>
-
-            <div class="form-group">
-
-                <input type="text" class="form-control" placeholder="ÄrendeNamn" @bind="issue.IssueName" />
-
-                <div class="col">
-
-                    <input type="text" class="form-control" placeholder="Tidpunkt:" @bind="issue.Time" />
-                </div>
-
-                <div class="col">
-
-                    <input type="text" class="form-control" placeholder="Beskriv ärendet.." @bind="issue.Description" />
-                </div>
-
-                <div class="col">
-
-                    <input type="text" class="form-control" placeholder="Status:" @bind="issue.Status" />
-                </div>
-            </div>
-
             <button type="submit" class="bnt btn-success">Skapa Ärende</button>
         </EditForm>
 

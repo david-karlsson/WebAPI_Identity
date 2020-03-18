@@ -23,5 +23,11 @@ namespace Blazor.Models
         public string Description { get; set; }
         public string Status { get; set; }
 
+
+        //List<IssueModel> CountryList = new List<IssueModel>() { new IssueModel.CustomerId ()};
+
     }
+
+
+
 }
