@@ -43,11 +43,11 @@ namespace MVC.Controllers
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
                 // GET CASES
-                var caseResponse = await client.GetAsync("http://localhost:63539/api/customercases");
+                var caseResponse = await client.GetAsync("https://localhost:44318/api/customers");
                 var resultCases = JsonConvert.DeserializeObject<IEnumerable<IssueModel>>(await caseResponse.Content.ReadAsStringAsync());
 
                 // GET CUSTOMER
-                var customerResponse = await client.GetAsync("http://localhost:63539/api/customers");
+                var customerResponse = await client.GetAsync("https://localhost:44318/api/issues");
                 var resultCustomers = JsonConvert.DeserializeObject<IEnumerable<CustomerModel>>(await customerResponse.Content.ReadAsStringAsync());
 
                 ViewBag.Cases = resultCases;
@@ -92,7 +92,7 @@ namespace MVC.Controllers
             using (var client = new HttpClient())
             {
                 HttpContent request = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("http://localhost:63539/api/users/register", request);
+                var response = await client.PostAsync("http://localhost:52921/Home/Register", request);
 
                 if (response.IsSuccessStatusCode)
                     return RedirectToAction("Login");
