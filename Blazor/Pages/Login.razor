@@ -1,0 +1,29 @@
+﻿@page "/Login"
+@using Blazor.Models
+@using Blazor.Data
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+<h3>Login</h3>
+
+@code {
+
+    private UserModel user;
+
+    protected override Task OnInitializedAsync()
+    {
+        user = new UserModel();
+        return base.OnInitializedAsync();
+    }
+
+    private async Task<bool> ValidateUser()
+    {
+
+       // ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(user.Email);
+       // NavigationManager.NavigateTo("/");
+        return await Task.FromResult(true);
+    }
+
+}

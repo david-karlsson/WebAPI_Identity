@@ -2,25 +2,24 @@
 @using Blazor.Models
 @inject HttpClient http
 
+<div class="container">
 
-    <div class="container">
+    <div class="text-right">
 
-        <div class="text-right">
-
-            <button type="submit" class="btn btn-danger" @onclick="DeleteAllIssues">Ta borta ALLA ärenden!</button>
-        </div>
-
+        <button type="submit" class="btn btn-danger" @onclick="DeleteAllIssues">Ta borta ALLA ärenden!</button>
+    </div>
 
 
-        <EditForm class="my-5" Model="@issue" OnSubmit="@CreateIssue">
 
-            <h5 class="mb-5">Skapa ett Ärende</h5>
-            <div class="form-group">
+    <EditForm class="my-5" Model="@issue" OnSubmit="@CreateIssue">
+
+        <h5 class="mb-5">Skapa ett Ärende</h5>
+        <div class="form-group">
 
 
-                <div class="row">
+            <div class="row">
 
-                    @*<div class="col">
+                @*<div class="col">
 
             <input type="text" class="form-control" placeholder="Förnamn.." @bind="issue.FirstName" />
         </div>
@@ -30,174 +29,173 @@
 
             <input type="text" class="form-control" placeholder="Efternamn.." @bind="issue.LastName" />
         </div>
-                    *@
+                *@
 
 
-                 
 
 
-                    @*<InputSelect @bind-Value="IssueModel.CustomerId" class="form-control">
+
+                @*<InputSelect @bind-Value="Models.IssueCreateModel" class="form-control">
 
 
-                        @if (model?.Countries != null)
-                        {
+        @if (Models.IssueCreateModel?.CustomerId != null)
+        {
+            @foreach (var i in Models.IssueCreateModel)
+                                                         {
+                    < option value = "@issues.FirstName @issues.LastName" > @issues.FirstName @issues.LastName </ option >
+                                     }
+        }
 
-                            @foreach (var i in (IEnumerable < IssueModel)issue)
-                                {
-                        <option value="@i">@i</option>
-                            }}
+            </ InputSelect >*@
 
-                        </InputSelect>*@
-                    
+
+
+
+                <div class="col">
+                    Kundnr(ej 0) :
+                    <input type="text" class="form-control" placeholder="kund.." @bind="issue.CustomerId" />
                 </div>
 
-                <div class="form-group">
+                <input type="text" class="form-control" placeholder="ÄrendeNamn" @bind="issue.IssueName" />
 
-                    <div class="col">
+                <div class="col">
 
-                        <input type="text" class="form-control" placeholder="kund.." @bind="issue.CustomerId" />
-                    </div>
+                    <input type="text" class="form-control" placeholder="Tidpunkt:" @bind="issue.Time" />
+                </div>
 
-                    <input type="text" class="form-control" placeholder="ÄrendeNamn" @bind="issue.IssueName" />
+                <div class="col">
 
-                    <div class="col">
+                    <input type="text" class="form-control" placeholder="Beskriv ärendet.." @bind="issue.Description" />
+                </div>
 
-                        <input type="text" class="form-control" placeholder="Tidpunkt:" @bind="issue.Time" />
-                    </div>
+                <div class="col">
 
-                    <div class="col">
-
-                        <input type="text" class="form-control" placeholder="Beskriv ärendet.." @bind="issue.Description" />
-                    </div>
-
-                    <div class="col">
-
-                        <input type="text" class="form-control" placeholder="Status:" @bind="issue.Status" />
-                    </div>
+                    <input type="text" class="form-control" placeholder="Status:" @bind="issue.Status" />
                 </div>
             </div>
-            <button type="submit" class="bnt btn-success">Skapa Ärende</button>
-        </EditForm>
+                </div>
+                <button type = "submit" class="bnt btn-success">Skapa Ärende</button>
+            </EditForm>
 
 
 
-        <table class="table">
+            <table class="table">
 
 
-            <thead class="thead-light">
-
-                <tr>
-
-                    <th scope="col">#</th>
-                    @*<th scope="col">Förnamn</th>
-                    <th scope="col">EfterNamn</th>*@
-                    <th scope="col">Kund</th>
-                    <th scope="col" colspan="2">ÄrendeNamn</th>
-                    <th scope="col">Tidpunkt</th>
-                    <th scope="col">Beskrivning</th>
-                    <th scope="col">Status</th>
-
-
-
-
-                </tr>
-            </thead>
-
-
-
-            @if(issues != null)
-            {
-
-
-                <tbody>
-
-                    @foreach(var issue in issues)
-
-                    {
+                <thead class="thead-light">
 
                     <tr>
 
-                        <th scope="row">@issue.Id</th>
-
-                        <td>@issue.CustomerId</td>
-
-                        <td>@issue.IssueName</td>
-                        <td>@issue.FirstName</td>
-                        <td>@issue.LastName</td>
-                        <td>@issue.Time</td>
-                        <td>@issue.Description</td>
-                        <td>@issue.Status</td>
-                        <td class="center">
-
-                            <span style="cursor:pointer;" class="oi oi-trash" @onclick="()=>DeleteIssue(issue.Id)"></span>
-                        </td>
+                        <th scope = "col" >#</th>
+    @*<th scope="col">Förnamn</th>
+        <th scope="col">EfterNamn</th>*@
+                        <th scope="col">Kund</th>
+                        <th scope="col" colspan="2">ÄrendeNamn</th>
+                        <th scope="col">Tidpunkt</th>
+                        <th scope="col">Beskrivning</th>
+                        <th scope="col">Status</th>
 
 
-                    </tr>
+
+
+                        </tr>
+                        </thead>
+
+
+
+                        @if(issues != null)
+                                    {
+
+
+                        <tbody>
+
+                            @foreach(var issue in issues)
+
+                                                {
+
+                            <tr>
+
+                                <th scope="row">@issue.Id</th>
+
+                                <td>@issue.CustomerId</td>
+
+                                <td>@issue.IssueName</td>
+                                <td>@issue.FirstName</td>
+                                <td>@issue.LastName</td>
+                                <td>@issue.Time</td>
+                                <td>@issue.Description</td>
+                                <td>@issue.Status</td>
+                                <td class="center">
+
+                                    <span style="cursor:pointer;" class="oi oi-trash" @onclick="()=>DeleteIssue(issue.Id)"></span>
+                                </td>
+
+
+                            </tr>
+                            }
+
+
+                        </tbody>
                     }
+                        </table>
+
+                </div>
 
 
-                </tbody>
-            }
-        </table>
-
-    </div>
+                @code {
 
 
-@code {
-
-
-    private List<IssueModel> issues;
-    private IssueCreateModel issue;
+                        private List<IssueModel> issues;
+private IssueCreateModel issue;
 
 
 
 
-    private async Task GetIssues()
+private async Task GetIssues()
 
-    {
-        issues = await http.GetJsonAsync<List<IssueModel>>("https://localhost:44318/api/issues");
-        StateHasChanged();
-    }
-
-
-
-
-    private async Task CreateIssue()
-
-    {
-        await http.PostJsonAsync<IssueCreateModel>("https://localhost:44318/api/issues", issue);
-        issue = new IssueCreateModel();
-        await GetIssues();
-
-    }
+{
+                        issues = await http.GetJsonAsync<List<IssueModel>>("https://localhost:44318/api/issues");
+                        StateHasChanged();
+}
 
 
 
-    private async Task DeleteIssue(int id)
 
-    {
-        await http.DeleteAsync($"https://localhost:44318/api/issues/{id}");
-        await GetIssues();
+private async Task CreateIssue()
 
-    }
-
-
-    private async Task DeleteAllIssues()
-
-    {
-        await http.DeleteAsync("https://localhost:44318/api/issues/all");
-        await GetIssues();
-
-    }
-
-
-    protected override async Task OnInitializedAsync()
-    {
-
-        issue = new IssueCreateModel();
-        await GetIssues();
-    }
-
+{
+                        await http.PostJsonAsync<IssueCreateModel>("https://localhost:44318/api/issues", issue);
+                        issue = new IssueCreateModel();
+                        await GetIssues();
 
 }
+
+
+
+private async Task DeleteIssue(int id)
+
+{
+                        await http.DeleteAsync($"https://localhost:44318/api/issues/{id}");
+                        await GetIssues();
+
+}
+
+
+private async Task DeleteAllIssues()
+
+{
+                        await http.DeleteAsync("https://localhost:44318/api/issues/all");
+                        await GetIssues();
+
+}
+
+
+protected override async Task OnInitializedAsync()
+{
+
+                        issue = new IssueCreateModel();
+                        await GetIssues();
+}
+
+
+                }

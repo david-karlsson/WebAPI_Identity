@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (ViewBag.Role == "admin")
+{
+    <p>Du är inloggad som administratör</p>
+}
+else
+{
+    <p>Du är inloggad som standardanvändare</p>
+}
+
+<a asp-area="" asp-controller="Home" asp-action="Logout">Logga ut</a>
+
+<h1>ÄRENDEN</h1>
+<ul>
+    @foreach (var c in ViewBag.Cases)
+    {
+        <li>@c.Title - @c.Customer.Name</li>
+    }
+</ul>
+
+<hr>
+
+<h1>KUNDER</h1>
+<ul>
+    @foreach (var c in ViewBag.Customers)
+    {
+        <li>@c.Name</li>
+    }
+</ul>

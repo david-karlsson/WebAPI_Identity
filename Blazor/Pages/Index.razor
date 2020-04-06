@@ -1,21 +1,119 @@
 ﻿@inject Blazored.LocalStorage.ILocalStorageService LocalStore
-
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @page "/"
+@using Blazor.Models
+@inject HttpClient http
+
+
+
+@*<editform class="my-5" model="@user" onsubmit="@CreateUser">
+
+            <h5 class="mb-5">skapa en handläggare</h5>
+            <div class="form-group">
+
+
+                <div class="row">
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="förnamn.." @bind="user.FirstName" />
+                    </div>
+
+
+                    <div class="col">
+
+                        <input type="text" class="form-control" placeholder="efternamn.." @bind="user.LastName" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <input type="text" class="form-control" placeholder="email.." @bind="user.Email" />
+
+
+            </div>
+
+
+            <div class="form-group">
+
+                <input type="text" class="form-control" placeholder="email.." @bind="user.Password" />
+
+
+            </div>
+
+            <button type="submit" class="bnt btn-success">skapa handläggare</button>
+        </editform>*@
+
+    @code{
+
+
+        private List<UserModel> users;
+        private UserCreateModel user;
+
+        private async Task GetUsers()
+
+        {
+            users = await http.GetJsonAsync<List<UserModel>>("https://localhost:44318/api/users");
+            StateHasChanged();
+        }
+
+
+
+
+        private async Task CreateUser()
+
+        {
+            await http.PostJsonAsync<CustomerCreateModel>("https://localhost:44318/api/users", users);
+            user = new UserCreateModel();
+            await GetUsers();
+
+        }
+    }
+
 
 <h1>Your LocalStorage Note</h1>
 
-<textarea @bind="noteContent" />
-<br />
-<button @onclick="UpdateLocalStorage">Save</button>
-<button @onclick="ClearLocalStorage">Clear</button>
+
+    <h5 class="mb-5">skapa en handläggare</h5>
+
+    <textarea @bind="noteContent" />
+    <br />
+    <button @onclick="UpdateLocalStorage">Save</button>
+    <button @onclick="ClearLocalStorage">Clear</button>
+
+
+
+
+
+
 
 @code{
+
     const string noteKey = "note";
     string noteContent;
-
     public async void UpdateLocalStorage()
     {
+
         await LocalStore.SetItemAsync(noteKey, noteContent);
+
+
+        var authstate = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authstate.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine($"{user.Identity.Name} is authenticated.");
+        }
+        else
+        {
+            Console.WriteLine("the user is not authenticated.");
+        }
+
+
+
     }
 
     public async void ClearLocalStorage()

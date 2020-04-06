@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI_Identity.Entities;
-
 using Microsoft.AspNetCore.Authorization;
 using WebAPI_Identity.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,7 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace WebAPI_Identity.Controllers
 {
@@ -170,8 +171,34 @@ namespace WebAPI_Identity.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
 
+            var baseAddress = new Uri("https://localhost:44318/api/");
 
-            return Ok(
+            using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1ODQ2MTA4NDUsImV4cCI6MTU4NTIxNTY0NSwiaWF0IjoxNTg0NjEwODQ1fQ.zamhOsuQIX3eXlx5AvouegneZ1hmp2WkeMBwBdZ_nbo");
+
+
+                using (var response = await httpClient.GetAsync("user/list{?organizationId}"))
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+                }
+
+
+                using (var requestMessage =
+            new HttpRequestMessage(HttpMethod.Get, "https://localhost:44318/api/"))
+                {
+                    requestMessage.Headers.Authorization =
+                        new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1ODQ2MTA4NDUsImV4cCI6MTU4NTIxNTY0NSwiaWF0IjoxNTg0NjEwODQ1fQ.zamhOsuQIX3eXlx5AvouegneZ1hmp2WkeMBwBdZ_nbo");
+                    await httpClient.SendAsync(requestMessage);
+                }
+
+
+
+
+
+
+
+                return Ok(
                 new
                 {
                     id = user.Id,
@@ -182,15 +209,31 @@ namespace WebAPI_Identity.Controllers
                 }
 
                 );
+
+
+
+
+
+            }
         }
 
+        //public override Task<AuthenticationState> GetAuthenticationStateAsync()
+        //{
+        //    var identity = new ClaimsIdentity(new[]
+        //    {
+        //        new Claim(ClaimTypes.Name, "mrfibuli"),
+        //    }, "Fake authentication type");
+
+        //    var user = new ClaimsPrincipal(identity);
+
+        //    return Task.FromResult(new AuthenticationState(user));
+        //}
 
 
 
 
-
-            // DELETE: api/Users/5
-            [HttpDelete("{id}")]
+        // DELETE: api/Users/5
+        [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -209,5 +252,12 @@ namespace WebAPI_Identity.Controllers
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
+
+
+
     }
+
+
+
 }

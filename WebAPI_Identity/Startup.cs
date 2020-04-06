@@ -71,9 +71,11 @@ namespace WebAPI_Identity
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.ASCII.GetBytes(Configuration.GetSection("secret").Value))
+                    Encoding.ASCII.GetBytes(Configuration.GetSection("secret").Value)),
 
-                };
+
+            };
+
             });
 
 
